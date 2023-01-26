@@ -6,7 +6,7 @@ using Tickets.Infra.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IConnectionFactory, SqlConnectionFactory>();
+builder.Services.AddScoped<IConnectionFactory, PostgresConnectionFactory>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 var app = builder.Build();
@@ -24,14 +24,14 @@ app.MapPost("/tickets", async (TicketDto dto, ITicketRepository repo) =>
         { 
             Title = dto.Title,
             Description = dto.Description,
-            Reference = Guid.NewGuid().ToString()
+            Reference = Guid.NewGuid().ToString("N")
         });
         
         return Results.Ok();
     }
-    catch (Exception)
+    catch (Exception ex)
     {
-        return Results.BadRequest();
+        return Results.BadRequest(ex.Message);
     }
 });
 

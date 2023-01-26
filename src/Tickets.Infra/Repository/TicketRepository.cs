@@ -29,16 +29,16 @@ namespace Tickets.Infra.Repository
             };
 
             await _connection.ExecuteAsync(
-                @"INSERT INTO TICKETS
-                (TITLE, DESCRIPTION, PRIORITY, OPENEDAT, REFERENCE)
+                @"INSERT INTO Tickets
+                (Title, Description, Priority, OpenedAt, Reference)
                 VALUES
-                (@TITLE, @DESCRIPTION, @PRIORITY, @OPENEDAT, @REFERENCE);", parameter);
+                (@Title, @Description, @Priority, @OpenedAt, @Reference);", parameter);
         }
 
         public async Task<IEnumerable<Ticket>> List()
         {
             return await _connection
-                .QueryAsync<Ticket>(@"SELECT * FROM TICKETS ORDER BY OPENEDAT DESC;");
+                .QueryAsync<Ticket>(@"SELECT * FROM Tickets ORDER BY OpenedAt DESC;");
         }
     }
 }
