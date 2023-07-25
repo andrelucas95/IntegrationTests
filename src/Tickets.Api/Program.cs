@@ -11,7 +11,7 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Tickets Api Running!");
 app.MapGet("/tickets", async (ITicketRepository repo) => 
 {
     return await repo.List();

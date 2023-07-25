@@ -1,0 +1,35 @@
+version: '3.5'
+
+networks:
+  backend:
+
+services:
+  ticketsdb:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=@psqlpass
+      - POSTGRES_DB=tickets_db
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+      - ./.Scripts:/docker-entrypoint-initdb.d
+    networks:
+      - backend
+
+  web-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - backend
+    ports:
+      - 5000:80
+    links:
+      - ticketsdb
+    depends_on:
+      - ticketsdb
+
+volumes:
+  postgresdata:
